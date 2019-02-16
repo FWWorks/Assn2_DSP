@@ -49,6 +49,14 @@ class PublisherDirectly:
         self.socket_heartbeat.connect(self.broker_address)
 
     '''
+    if a leader broker dies, watcher should use this function to update connection with the new leader broker
+    '''
+    def update_broker_bind(self, new_broker_address):
+        self.socket_broker.close()
+        self.socket_broker.connect(new_broker_address)
+        self.broker_address = new_broker_address
+
+    '''
     publisher wants to cancel a topic
     '''
     def unregister(self, topic):
@@ -124,3 +132,11 @@ class PublisherViaBroker:
     def drop_system(self):
         self.socket_broker.send_json((json.dumps({'type': 'pub_exit_system', 'ip': self.ip_address})))
         return 0
+
+    '''
+    if a leader broker dies, watcher should use this function to update connection with the new leader broker
+    '''
+    def update_broker_bind(self, new_broker_address):
+        self.socket_broker.close()
+        self.socket_broker.connect(new_broker_address)
+        self.broker_address = new_broker_address
