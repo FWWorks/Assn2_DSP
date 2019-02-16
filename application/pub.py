@@ -12,14 +12,17 @@ class Publisher:
         self.heartthread = threading.Thread(target=self.send_heart_beat)
         self.my_client = kz_client.KazooClient(hosts=zk_address)
         self.my_client.start()
-        leader_watcher = DataWatch(self.my_client, '/Leader', self.update_broker_ip_socket)
-        self.broker_address = self.get_broker_address()
+
+        broker_address, _ = self.get_broker_address()
+        broker_address = broker_address.decode()
+        self.broker_address = broker_address
         if mode == 1:
             self.pub_mw = PublisherDirectly(self.ip_address, self.broker_address)
         elif mode == 2:
             self.pub_mw = PublisherViaBroker(self.ip_address, self.broker_address)
         else:
             print("mode error, please choose approach")
+
         self.exited = False
         self.logger = get_logger(logfile)
         self.pub_name = pub_name
@@ -36,11 +39,10 @@ class Publisher:
         #if self.heartthread.is_alive() == False:
         #    self.heartthread.start()
         self.logger.info('pub register to bloker on %s. ip=%s, topic=%s'%(self.broker_address, self.ip_address, topic))
-        node_url = "/Pub/" + self.pub_name
+        node_url = "/Publisher/" + self.pub_name
         node_data = self.ip_address + "," + topic
         self.my_client.create(node_url, node_data.encode(), ephemeral=True)
-
-
+        leader_watcher = DataWatch(self.my_client, '/Leader', self.update_broker_ip_socket)
         return 0
 
     '''

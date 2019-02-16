@@ -52,8 +52,11 @@ class PublisherDirectly:
     if a leader broker dies, watcher should use this function to update connection with the new leader broker
     '''
     def update_broker_bind(self, new_broker_address):
+        context = zmq.Context()
+        socket = context.socket(zmq.REQ)
+        socket.connect(new_broker_address)
         self.socket_broker.close()
-        self.socket_broker.connect(new_broker_address)
+        self.socket_broker = socket
         self.broker_address = new_broker_address
 
     '''
@@ -137,6 +140,9 @@ class PublisherViaBroker:
     if a leader broker dies, watcher should use this function to update connection with the new leader broker
     '''
     def update_broker_bind(self, new_broker_address):
+        context = zmq.Context()
+        socket = context.socket(zmq.REQ)
+        socket.connect(new_broker_address)
         self.socket_broker.close()
-        self.socket_broker.connect(new_broker_address)
+        self.socket_broker = socket
         self.broker_address = new_broker_address

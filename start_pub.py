@@ -3,7 +3,7 @@ from configobj import ConfigObj
 import sys
 
 
-config_path, item = None, ''
+config_path, item = None, 'Pub3'
 if len(sys.argv) == 1:
     config_path = 'config/publisher.ini'
 if len(sys.argv) >= 2:
@@ -18,7 +18,7 @@ if item == '':
 config = config[item]
 
 p = Publisher(mode=int(config['mode']), ip_address=config['pub_addr'],
-              broker_address=config['broker_addr'], strength=config['strength'], logfile=config['logfile'])
+              zk_address=config['zookeeper'], strength=config['strength'], logfile=config['logfile'],pub_name=item)
 
 p.register(config['topic'])
 
