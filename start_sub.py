@@ -3,7 +3,7 @@ from configobj import ConfigObj
 import sys
 import time
 
-config_path, item = None, ''
+config_path, item = None, 'Sub3'
 if len(sys.argv) == 1:
     config_path = 'config/subscriber.ini'
 if len(sys.argv) >= 2:
@@ -17,8 +17,8 @@ if item == '':
 
 config = config[item]
 
-p = Subscriber(ip_self=config['sub_addr'], ip_broker=config['broker_addr'],
-               comm_type=int(config['mode']), logfile=config['logfile'])
+p = Subscriber(ip_self=config['sub_addr'], ip_zookeeper=config['zookeeper'],
+               comm_type=int(config['mode']), logfile=config['logfile'], name=item)
 p.register(config['topic'])
 
 while 1:

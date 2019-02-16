@@ -1,17 +1,5 @@
-2019-02-16 15:47:38 INFO i am the current leader. Table={'hello': {'pub': {'tpc://127.0.0.1:5000'}, 'sub': {'tpc://127.0.0.1:5011', 'tpc://127.0.0.1:5010'}}}
-2019-02-16 15:47:38 INFO Publisher changes. Table={'hello': {'pub': {'tpc://127.0.0.1:5000'}, 'sub': {'tpc://127.0.0.1:5011', 'tpc://127.0.0.1:5010'}}}
-2019-02-16 15:47:38 INFO Subscriber changes. Table={'hello': {'pub': {'tpc://127.0.0.1:5000'}, 'sub': {'tpc://127.0.0.1:5011', 'tpc://127.0.0.1:5010'}}}
-2019-02-16 15:47:38 INFO broker started. mode=2, port=5555, znode=/Election/Broker_0000000016
-2019-02-16 15:53:57 INFO request={'type': 'add_publisher', 'ip': 'tcp://10.0.0.2:5000', 'topic': 'hello'}, response=
-2019-02-16 15:54:18 INFO request={'type': 'add_publisher', 'ip': 'tcp://10.0.0.2:5000', 'topic': 'hello'}, response=
-2019-02-16 15:54:40 INFO request={'type': 'add_publisher', 'ip': 'tcp://10.0.0.2:5000', 'topic': 'hello'}, response=
-2019-02-16 15:54:40 INFO Publisher changes. Table={'hello': {'pub': {'tpc://127.0.0.1:5000', 'tcp://10.0.0.2:5000'}, 'sub': {'tpc://127.0.0.1:5011', 'tpc://127.0.0.1:5010'}}}
-2019-02-16 15:54:51 INFO Publisher changes. Table={'hello': {'pub': {'tpc://127.0.0.1:5000'}, 'sub': {'tpc://127.0.0.1:5011', 'tpc://127.0.0.1:5010'}}}
-2019-02-16 15:54:52 INFO request={'type': 'add_publisher', 'ip': 'tcp://10.0.0.2:5000', 'topic': 'hello'}, response=
-2019-02-16 15:54:52 INFO Publisher changes. Table={'hello': {'pub': {'tpc://127.0.0.1:5000', 'tcp://10.0.0.2:5000'}, 'sub': {'tpc://127.0.0.1:5011', 'tpc://127.0.0.1:5010'}}}
-2019-02-16 15:55:37 INFO Publisher changes. Table={'hello': {'pub': {'tpc://127.0.0.1:5000'}, 'sub': {'tpc://127.0.0.1:5011', 'tpc://127.0.0.1:5010'}}}
-2019-02-16 15:58:47 INFO request={'type': 'add_publisher', 'ip': 'tcp://10.0.0.2:5000', 'topic': 'hello'}, response=
-2019-02-16 15:58:47 INFO Publisher changes. Table={'hello': {'pub': {'tpc://127.0.0.1:5000', 'tcp://10.0.0.2:5000'}, 'sub': {'tpc://127.0.0.1:5011', 'tpc://127.0.0.1:5010'}}}
-2019-02-16 15:58:57 INFO Publisher changes. Table={'hello': {'pub': {'tpc://127.0.0.1:5000'}, 'sub': {'tpc://127.0.0.1:5011', 'tpc://127.0.0.1:5010'}}}
-2019-02-16 16:01:02 INFO request={'type': 'add_publisher', 'ip': 'tcp://10.0.0.2:5000', 'topic': 'hello'}, response=
-2019-02-16 16:01:02 INFO Publisher changes. Table={'hello': {'pub': {'tpc://127.0.0.1:5000', 'tcp://10.0.0.2:5000'}, 'sub': {'tpc://127.0.0.1:5011', 'tpc://127.0.0.1:5010'}}}
+2019-02-16 16:32:30 INFO I am currently not the leader. Waiting for Broker_0000000019 to die
+2019-02-16 16:32:30 INFO Publisher changes. Table={'hello': {'pub': {'tcp://127.0.0.1:5005'}, 'sub': {'tcp://127.0.0.1:5010'}}}
+2019-02-16 16:32:30 INFO Subscriber changes. Table={'hello': {'pub': {'tcp://127.0.0.1:5005'}, 'sub': {'tcp://127.0.0.1:5010'}}}
+2019-02-16 16:32:30 INFO broker started. mode=1, port=5555, znode=/Election/Broker_0000000020
+2019-02-16 16:33:47 INFO i am the current leader. Table={'hello': {'pub': {'tcp://127.0.0.1:5005'}, 'sub': {'tcp://127.0.0.1:5010'}}}

@@ -1,1 +1,3 @@
-2019-02-16 16:01:02 INFO pub register to bloker on tcp://127.0.0.1:5555. ip=tcp://10.0.0.2:5000, topic=hello
+2019-02-16 16:31:50 INFO pub register to bloker on tcp://127.0.0.1:5556. ip=tcp://127.0.0.1:5005, topic=hello
+2019-02-16 16:32:01 INFO publishing a msg. topic=hello, value=qwe
+2019-02-16 16:34:05 INFO publishing a msg. topic=hello, value=xyz

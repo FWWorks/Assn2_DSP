@@ -11,7 +11,8 @@ sub_broker = 2
 
 class Subscriber:
 
-    def __init__(self, ip_self, ip_zookeeper, comm_type, logfile='log/sub.log'):
+    def __init__(self, ip_self, ip_zookeeper, comm_type, logfile='log/sub.log', name=''):
+        self.name = name
         self.ip = ip_self
         self.ip_b = None
         self.heart_thread = threading.Thread(target=self.send_heart_beat)
@@ -20,7 +21,9 @@ class Subscriber:
         self.logger = get_logger(logfile)
         self.zk_client = KazooClient(hosts=ip_zookeeper)
         self.zk_client.start()
-        self.zk_client.get("/Leader", watch=self.__get_broker_ip)
+        ip_b, _ = self.zk_client.get("/Leader")
+        ip_b = ip_b.decode()
+        self.ip_b = ip_b
         if comm_type == sub_direct:
             self.sub_mid = SubDirect(self.ip, self.ip_b)
         elif comm_type == sub_broker:
@@ -37,10 +40,11 @@ class Subscriber:
         self.ip_b = self.zk_client.get("/Leader")
 
     def register(self, topic):
-        DataWatch(self.zk_client, "/Leader", self.update)
         self.sub_mid.register(topic)
-        if not self.heart_thread.is_alive():
-            self.heart_thread.start()
+        # if not self.heart_thread.is_alive():
+        #     self.heart_thread.start()
+        self.zk_client.create('/Subscriber/%s'%self.name, ('%s,%s'%(self.ip, topic)).encode(), ephemeral=True)
+        DataWatch(self.zk_client, "/Leader", self.update)
         self.logger.info('sub register to broker on %s. ip=%s, topic=%s' % (self.ip_b, self.ip, topic))
         return 0
 
