@@ -2,7 +2,7 @@ from application.broker import Broker
 from configobj import ConfigObj
 import sys
 
-config_path, item = None, ''
+config_path, item = None, 'Broker1'
 if len(sys.argv) == 1:
     config_path = 'config/broker.ini'
 if len(sys.argv) >= 2:

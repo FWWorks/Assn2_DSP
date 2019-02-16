@@ -17,6 +17,9 @@ class RegisterTable:
         self.subs = {}
         self.topics = {}
 
+    def __str__(self):
+        return str(self.topics)
+
     def add_pub(self, pub, topics):
         if isinstance(topics, str):
             topics = [topics]

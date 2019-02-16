@@ -1,1 +1,7 @@
-2019-02-05 00:40:16 INFO broker started. mode=2, port=5555
+2019-02-16 15:32:20 INFO I am currently not the leader. Waiting for Broker_0000000014 to die
+2019-02-16 15:32:20 INFO Publisher changes. Table={'hello': {'pub': {'tpc://127.0.0.1:5000'}, 'sub': {'tpc://127.0.0.1:5010', 'tpc://127.0.0.1:5011'}}}
+2019-02-16 15:32:20 INFO Subscriber changes. Table={'hello': {'pub': {'tpc://127.0.0.1:5000'}, 'sub': {'tpc://127.0.0.1:5010', 'tpc://127.0.0.1:5011'}}}
+2019-02-16 15:32:20 INFO broker started. mode=2, port=5555, znode=/Election/Broker_0000000015
+2019-02-16 15:32:27 INFO i am the current leader. Table={'hello': {'pub': {'tpc://127.0.0.1:5000'}, 'sub': {'tpc://127.0.0.1:5010', 'tpc://127.0.0.1:5011'}}}
+2019-02-16 15:32:56 INFO Subscriber changes. Table={'hello': {'pub': {'tpc://127.0.0.1:5000'}, 'sub': {'tpc://127.0.0.1:5010'}}}
+2019-02-16 15:32:59 INFO Subscriber changes. Table={'hello': {'pub': {'tpc://127.0.0.1:5000'}, 'sub': {'tpc://127.0.0.1:5010', 'tpc://127.0.0.1:5011'}}}
