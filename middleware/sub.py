@@ -29,6 +29,11 @@ class SubDirect:
         self.socket_heartbeat = context2.socket(zmq.REQ)
         self.socket_heartbeat.connect(self.ip_b)
 
+    def update_broker_ip(self, new_ip):
+        self.socket_sub.close()
+        self.socket_sub.connect(new_ip)
+        self.ip_b = new_ip
+
     def receive(self):
         msg = self.socket_rcv.recv_json()
         if msg['topic'] in self.topics_list:
@@ -73,6 +78,11 @@ class SubBroker:
         context2 = zmq.Context()
         self.socket_heartbeat = context2.socket(zmq.REQ)
         self.socket_heartbeat.connect(self.ip_b)
+
+    def update_broker_ip(self, new_ip):
+        self.socket_sub.close()
+        self.socket_sub.connect(new_ip)
+        self.ip_b = new_ip
 
     def notify(self):
         msg = self.socket_ntf.recv_json()

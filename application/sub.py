@@ -1,6 +1,7 @@
 import threading
 import time
 from kazoo.client import KazooClient
+from kazoo.recipe.watchers import DataWatch
 from middleware.sub import *
 from logger import get_logger
 
@@ -26,12 +27,17 @@ class Subscriber:
         self.logger = get_logger(logfile)
         self.zk_client = KazooClient(hosts=ip_zookeeper)
         self.zk_client.start()
-        self.zk_client.get("/Leader", watch=self.__get_broker_ip())
+        self.zk_client.get("/Leader", watch=self.__get_broker_ip)
+
+    def update(self, data, stat, ver):
+        self.ip_b = data.decode()
+        self.sub_mid.update_broker_ip(self.ip_b)
 
     def __get_broker_ip(self):
         self.ip_b = self.zk_client.get("/Leader")
 
     def register(self, topic):
+        DataWatch(self.zk_client, "/Leader", self.update)
         self.sub_mid.register(topic)
         if not self.heart_thread.is_alive():
             self.heart_thread.start()
