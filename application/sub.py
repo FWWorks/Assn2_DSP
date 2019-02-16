@@ -1,6 +1,7 @@
 import threading
 import time
 from kazoo.client import KazooClient
+from kazoo.recipe.watchers import DataWatch
 from middleware.sub import *
 from logger import get_logger
 
@@ -14,6 +15,12 @@ class Subscriber:
         self.ip = ip_self
         self.ip_b = None
         self.heart_thread = threading.Thread(target=self.send_heart_beat)
+        self.comm_type = comm_type
+        self.exited = False
+        self.logger = get_logger(logfile)
+        self.zk_client = KazooClient(hosts=ip_zookeeper)
+        self.zk_client.start()
+        self.zk_client.get("/Leader", watch=self.__get_broker_ip)
         if comm_type == sub_direct:
             self.sub_mid = SubDirect(self.ip, self.ip_b)
         elif comm_type == sub_broker:
@@ -21,17 +28,16 @@ class Subscriber:
         else:
             print("Error in communication type: Only 1 and 2 are accepted.")
             exit(1)
-        self.comm_type = comm_type
-        self.exited = False
-        self.logger = get_logger(logfile)
-        self.zk_client = KazooClient(hosts=ip_zookeeper)
-        self.zk_client.start()
-        self.zk_client.get("/Leader", watch=self.__get_broker_ip())
+
+    def update(self, data, stat, ver):
+        self.ip_b = data.decode()
+        self.sub_mid.update_broker_ip(self.ip_b)
 
     def __get_broker_ip(self):
         self.ip_b = self.zk_client.get("/Leader")
 
     def register(self, topic):
+        DataWatch(self.zk_client, "/Leader", self.update)
         self.sub_mid.register(topic)
         if not self.heart_thread.is_alive():
             self.heart_thread.start()

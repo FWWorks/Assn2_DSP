@@ -9,6 +9,7 @@ class SubDirect:
         self.ip_b = ip_broker
         self.context_sub = None
         self.context_rcv = None
+        self.context_heartbeat = None
         self.socket_sub = None
         self.socket_rcv = None
         self.topics_list = set()
@@ -25,9 +26,15 @@ class SubDirect:
         self.socket_rcv = self.context_rcv.socket(zmq.SUB)
         self.socket_rcv.setsockopt_string(zmq.SUBSCRIBE, '')
         self.socket_rcv.connect(ip)
-        context2 = zmq.Context()
-        self.socket_heartbeat = context2.socket(zmq.REQ)
+        self.context_heartbeat = zmq.Context()
+        self.socket_heartbeat = self.context_heartbeat.socket(zmq.REQ)
         self.socket_heartbeat.connect(self.ip_b)
+
+    def update_broker_ip(self, new_ip):
+        self.context_sub = zmq.Context()
+        self.socket_sub = self.context_sub.socket(zmq.REQ)
+        self.socket_sub.connect(new_ip)
+        self.ip_b = new_ip
 
     def receive(self):
         msg = self.socket_rcv.recv_json()
@@ -73,6 +80,12 @@ class SubBroker:
         context2 = zmq.Context()
         self.socket_heartbeat = context2.socket(zmq.REQ)
         self.socket_heartbeat.connect(self.ip_b)
+
+    def update_broker_ip(self, new_ip):
+        self.context_sub = zmq.Context()
+        self.socket_sub = self.context_sub.socket(zmq.REQ)
+        self.socket_sub.connect(new_ip)
+        self.ip_b = new_ip
 
     def notify(self):
         msg = self.socket_ntf.recv_json()
