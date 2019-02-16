@@ -2,6 +2,7 @@ from middleware.pub import *
 import threading,time,socket
 from logger import get_logger
 from kazoo import client as kz_client
+from kazoo.recipe.watchers import DataWatch
 
 class Publisher:
     def __init__(self, mode, ip_address=None, zk_address=None, strength=0, logfile='log/pub.log', pub_name = None):
@@ -10,6 +11,8 @@ class Publisher:
         self.strength = strength
         self.heartthread = threading.Thread(target=self.send_heart_beat)
         self.my_client = kz_client.KazooClient(hosts=zk_address)
+        self.my_client.start()
+        leader_watcher = DataWatch(self.my_client, '/Leader', self.update_broker_ip_socket)
         self.broker_address = self.get_broker_address()
         if mode == 1:
             self.pub_mw = PublisherDirectly(self.ip_address, self.broker_address)
@@ -27,8 +30,8 @@ class Publisher:
         return 0
 
     def register(self, topic):
-        tmp_watch =  self.my_client.get("/Leader", watch=self.update_broker_ip_socket)
-        self.broker_address = tmp_watch[0].decode()
+        #tmp_watch =  self.my_client.get("/Leader", watch=self.update_broker_ip_socket)
+        self.broker_address = self.my_client.get("/Leader")[0].decode()
         self.pub_mw.register(topic)
         #if self.heartthread.is_alive() == False:
         #    self.heartthread.start()
@@ -43,8 +46,8 @@ class Publisher:
     '''
     if a leader broker dies, watcher should use this function to update connection with the new leader broker
     '''
-    def update_broker_ip_socket(self):
-        self.broker_address = self.my_client.get("/Leader")[0].decode()
+    def update_broker_ip_socket(self, data, status, version):
+        self.broker_address = data.decode()
         self.pub_mw.update_broker_bind(self.broker_address)
         return 0
     '''
