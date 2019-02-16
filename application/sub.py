@@ -1,4 +1,6 @@
-import threading,time
+import threading
+import time
+from kazoo.client import KazooClient
 from middleware.sub import *
 from logger import get_logger
 
@@ -8,10 +10,10 @@ sub_broker = 2
 
 class Subscriber:
 
-    def __init__(self, ip_self, ip_broker, comm_type, logfile='log/sub.log'):
+    def __init__(self, ip_self, ip_zookeeper, comm_type, logfile='log/sub.log'):
         self.ip = ip_self
-        self.ip_b = ip_broker
-        self.heartthread = threading.Thread(target=self.send_heart_beat)
+        self.ip_b = None
+        self.heart_thread = threading.Thread(target=self.send_heart_beat)
         if comm_type == sub_direct:
             self.sub_mid = SubDirect(self.ip, self.ip_b)
         elif comm_type == sub_broker:
@@ -22,12 +24,18 @@ class Subscriber:
         self.comm_type = comm_type
         self.exited = False
         self.logger = get_logger(logfile)
+        self.zk_client = KazooClient(hosts=ip_zookeeper)
+        self.zk_client.start()
+        self.zk_client.get("/Leader", watch=self.__get_broker_ip())
+
+    def __get_broker_ip(self):
+        self.ip_b = self.zk_client.get("/Leader")
 
     def register(self, topic):
         self.sub_mid.register(topic)
-        if self.heartthread.is_alive() == False:
-            self.heartthread.start()
-        self.logger.info('sub register to bloker on %s. ip=%s, topic=%s' % (self.ip_b, self.ip, topic))
+        if not self.heart_thread.is_alive():
+            self.heart_thread.start()
+        self.logger.info('sub register to broker on %s. ip=%s, topic=%s' % (self.ip_b, self.ip, topic))
         return 0
 
     def receive(self):
@@ -36,7 +44,7 @@ class Subscriber:
             msg = self.sub_mid.receive()
         if self.comm_type == sub_broker:
             msg = self.sub_mid.notify()
-        self.logger.info('receive a msg=%s'%msg)
+        self.logger.info('receive a msg=%s' % msg)
         return msg
 
     '''
@@ -63,9 +71,9 @@ class Subscriber:
             if self.exited:
                 break
             time.sleep(1)
-            self.sub_mid.socket_heartbeat.send_json(
-                (json.dumps({'type': 'sub_heartbeat', 'ip': self.ip, 'mess': "5"})))
+            self.sub_mid.socket_heartbeat.send_json((json.dumps({'type': 'sub_heartbeat', 'ip': self.ip, 'mess': "5"})))
             res = self.sub_mid.socket_heartbeat.recv_json()
+            # print (res)
         return 0
 
 
