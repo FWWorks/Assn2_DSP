@@ -1,5 +1,5 @@
 import logging
-import time
+import datetime as dt
 
 loggers = {}
 
@@ -21,7 +21,9 @@ def get_logger(log_file):
     # fmt = "%(asctime)-15s %(levelname)s %(filename)s %(lineno)d %(process)d %(message)s"
     fmt = "%(asctime)-15s %(levelname)s %(message)s"
     datefmt = "%Y-%m-%d %H:%M:%S"
-    formatter = logging.Formatter(fmt, datefmt)
+    formatter = MyFormatter(fmt='%(asctime)s %(message)s',datefmt='%Y-%m-%d,%H:%M:%S.%f')
+    # formatter = logging.Formatter(datefmt)
+
     # add handler and formatter to logger
     fh.setFormatter(formatter)
     sh.setFormatter(formatter)
@@ -32,17 +34,13 @@ def get_logger(log_file):
 
     return logger
 
-'''
-time stamp: 2019-02-05 00:21:00.254
-stamp: 20190205002100254
-'''
-def get_time_stamp():
-    ct = time.time()
-    local_time = time.localtime(ct)
-    data_head = time.strftime("%Y-%m-%d %H:%M:%S", local_time)
-    data_secs = (ct - int(ct)) * 1000
-    time_stamp = "%s.%03d" % (data_head, data_secs)
-    print(time_stamp)
-    stamp = ("".join(time_stamp.split()[0].split("-"))+"".join(time_stamp.split()[1].split(":"))).replace('.', '')
-    print(stamp)
-    return time_stamp,stamp
+class MyFormatter(logging.Formatter):
+    converter=dt.datetime.fromtimestamp
+    def formatTime(self, record, datefmt=None):
+        ct = self.converter(record.created)
+        if datefmt:
+            s = ct.strftime(datefmt)
+        else:
+            t = ct.strftime("%Y-%m-%d %H:%M:%S")
+            s = "%s,%03d" % (t, record.msecs)
+        return s

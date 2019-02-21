@@ -1,5 +1,4 @@
-2019-02-16 16:32:30 INFO I am currently not the leader. Waiting for Broker_0000000019 to die
-2019-02-16 16:32:30 INFO Publisher changes. Table={'hello': {'pub': {'tcp://127.0.0.1:5005'}, 'sub': {'tcp://127.0.0.1:5010'}}}
-2019-02-16 16:32:30 INFO Subscriber changes. Table={'hello': {'pub': {'tcp://127.0.0.1:5005'}, 'sub': {'tcp://127.0.0.1:5010'}}}
-2019-02-16 16:32:30 INFO broker started. mode=1, port=5555, znode=/Election/Broker_0000000020
-2019-02-16 16:33:47 INFO i am the current leader. Table={'hello': {'pub': {'tcp://127.0.0.1:5005'}, 'sub': {'tcp://127.0.0.1:5010'}}}
+2019-02-20 22:51:59 INFO i am the current leader. Table={}
+2019-02-20 22:51:59 INFO Publisher changes. Table={}
+2019-02-20 22:51:59 INFO Subscriber changes. Table={}
+2019-02-20 22:51:59 INFO broker started. mode=1, port=5555, znode=/Election/Broker_0000000045

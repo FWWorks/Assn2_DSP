@@ -115,21 +115,6 @@ class RegisterTable:
     def get_sub_info(self, pub):
         return self.pubs.get(pub, {})
 
-    def check_aliveness(self):
-        now = datetime.now()
-        dead = []
-        for k, v in self.pubs.items():
-            dt = now-datetime.strptime(v['since'], tf)
-            if dt.seconds > 3 and v['status'] != -1:
-                v['status'] = -1
-                dead.append(('pub', k))
-        for k, v in self.subs.items():
-            dt = now-datetime.strptime(v['since'], tf)
-            if dt.seconds > 3 and v['status'] != -1:
-                v['status'] = -1
-                dead.append(('sub', k))
-        return dead
-
 class BrokerBase:
 
     def __init__(self, config):
@@ -139,33 +124,23 @@ class BrokerBase:
             'add_publisher': self._add_pub,
             'pub_unregister_topic': self._pub_unregister_topic,
             'pub_exit_system': self._pub_exit_system,
-            'pub_heartbeat': self._pub_heartbeat,
             'add_subscriber': self._add_sub,
             'sub_unregister_topic': self._sub_unregister_topic,
             'sub_exit_system': self._sub_exit_system,
-            'sub_heartbeat': self._sub_heartbeat,
         }
         self.socket = None
         self.logger = get_logger(config['logfile'])
 
-    def check_dead_entity(self):
-        while 1:
-            table_lock.acquire(blocking=True)
-            dead = self.table.check_aliveness()
-            table_lock.release()
-            if dead:
-                self.logger.error('missing too much heartbeats, disconnected. Info=%s'%dead)
-            time.sleep(1)
 
     def handle_req(self):
-        req = self.socket.recv_json()
+        try:
+            req = self.socket.recv_json(flags=zmq.NOBLOCK)
+        except zmq.Again:
+            raise RuntimeError('again')
         if isinstance(req, str):
             req = json.loads(req)
         result = self.req_handler[req['type']](req)
-        if req['type'].find('heartbeat') != -1:
-            self.logger.debug('request=%s, response=%s'%(req, result))
-        else:
-            self.logger.info('request=%s, response=%s' % (req, result))
+        self.logger.info('request=%s, response=%s' % (req, result))
         self.socket.send_json({'msg': result})
 
     def _add_pub(self, req):
@@ -192,14 +167,6 @@ class BrokerBase:
     def _sub_exit_system(self, req):
         topics = self.table.get_sub_info(req['ip']).get('topics', [])
         result = self.table.remove_sub(sub=req['ip'], topics=deepcopy(topics))
-        return result
-
-    def _pub_heartbeat(self, req):
-        result = self.table.refresh_pub(pub=req['ip'])
-        return result
-
-    def _sub_heartbeat(self, req):
-        result = self.table.refresh_sub(sub=req['ip'])
         return result
 
 class BrokerType1(BrokerBase):

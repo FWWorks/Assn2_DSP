@@ -10,7 +10,6 @@ class PublisherDirectly:
         self.broker_address = broker_address
         self.socket_broker = None
         self.context = zmq.Context()
-        self.socket_heartbeat = None
 
     def publish(self, topic, value):
         if self.socket == None:
@@ -45,8 +44,6 @@ class PublisherDirectly:
                                                       'ip': self.ip_address, 'topic': topic})))
             msg = self.socket_broker.recv_json()
         context2 = zmq.Context()
-        self.socket_heartbeat = context2.socket(zmq.REQ)
-        self.socket_heartbeat.connect(self.broker_address)
 
     '''
     if a leader broker dies, watcher should use this function to update connection with the new leader broker
@@ -82,7 +79,6 @@ class PublisherViaBroker:
         self.broker_address = broker_address
         self.socket_broker = None
         self.context = zmq.Context()
-        self.socket_heartbeat = None
 
     def publish(self, topic, value):
         if self.socket == None:
@@ -119,8 +115,6 @@ class PublisherViaBroker:
                                                       'ip': self.ip_address, 'topic': topic})))
             msg = self.socket_broker.recv_json()
         context2 = zmq.Context()
-        self.socket_heartbeat = context2.socket(zmq.REQ)
-        self.socket_heartbeat.connect(self.broker_address)
 
     '''
     publisher wants to cancel a topic
