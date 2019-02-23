@@ -1,0 +1,12 @@
+2019-02-21,22:56:31.400943 
+2019-02-21,22:56:31.404930 
+2019-02-21,22:56:31.407922 
+2019-02-21,22:56:31.412911 
+2019-02-21,22:56:31.439844 i am the current leader. Table={}
+2019-02-21,22:56:31.441833 Publisher changes. Table={}
+2019-02-21,22:56:31.443827 Subscriber changes. Table={}
+2019-02-21,22:56:31.443827 broker started. mode=1, port=5555, znode=/Election/Broker_0000000053
+2019-02-21,22:56:33.424530 request={'type': 'add_publisher', 'ip': 'tcp://127.0.0.1:5050', 'topic': 'hello0'}, response=
+2019-02-21,22:56:33.454448 Publisher changes. Table={'hello0': {'pub': {'tcp://127.0.0.1:5050'}, 'sub': set()}}
+2019-02-21,22:56:38.404210 request={'type': 'add_subscriber', 'ip': 'tcp://127.0.0.1:6000', 'topic': 'hello0'}, response=tcp://127.0.0.1:5050
+2019-02-21,22:56:38.443104 Subscriber changes. Table={'hello0': {'pub': {'tcp://127.0.0.1:5050'}, 'sub': {'tcp://127.0.0.1:6000'}}}

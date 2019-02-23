@@ -1,0 +1,22 @@
+2019-02-21,22:59:48.399883 
+2019-02-21,22:59:48.404871 
+2019-02-21,22:59:48.408858 
+2019-02-21,22:59:48.410854 
+2019-02-21,22:59:48.436803 i am the current leader. Table={}
+2019-02-21,22:59:48.438779 Publisher changes. Table={}
+2019-02-21,22:59:48.440773 Subscriber changes. Table={}
+2019-02-21,22:59:48.440773 broker started. mode=1, port=5555, znode=/Election/Broker_0000000054
+2019-02-21,22:59:50.425466 request={'type': 'add_publisher', 'ip': 'tcp://127.0.0.1:5050', 'topic': 'hello0'}, response=
+2019-02-21,22:59:50.452393 Publisher changes. Table={'hello0': {'pub': {'tcp://127.0.0.1:5050'}, 'sub': set()}}
+2019-02-21,22:59:55.446035 request={'type': 'add_subscriber', 'ip': 'tcp://127.0.0.1:6000', 'topic': 'hello0'}, response=tcp://127.0.0.1:5050
+2019-02-21,22:59:55.486929 request={'type': 'add_subscriber', 'ip': 'tcp://127.0.0.1:6003', 'topic': 'hello0'}, response=tcp://127.0.0.1:5050
+2019-02-21,22:59:55.526820 request={'type': 'add_subscriber', 'ip': 'tcp://127.0.0.1:6001', 'topic': 'hello0'}, response=tcp://127.0.0.1:5050
+2019-02-21,22:59:55.552750 request={'type': 'add_subscriber', 'ip': 'tcp://127.0.0.1:6002', 'topic': 'hello0'}, response=tcp://127.0.0.1:5050
+2019-02-21,22:59:55.581674 request={'type': 'add_subscriber', 'ip': 'tcp://127.0.0.1:6004', 'topic': 'hello0'}, response=tcp://127.0.0.1:5050
+2019-02-21,22:59:55.612590 request={'type': 'add_subscriber', 'ip': 'tcp://127.0.0.1:6005', 'topic': 'hello0'}, response=tcp://127.0.0.1:5050
+2019-02-21,22:59:55.655478 request={'type': 'add_subscriber', 'ip': 'tcp://127.0.0.1:6006', 'topic': 'hello0'}, response=tcp://127.0.0.1:5050
+2019-02-21,22:59:55.657472 request={'type': 'add_subscriber', 'ip': 'tcp://127.0.0.1:6007', 'topic': 'hello0'}, response=tcp://127.0.0.1:5050
+2019-02-21,22:59:55.747231 request={'type': 'add_subscriber', 'ip': 'tcp://127.0.0.1:6008', 'topic': 'hello0'}, response=tcp://127.0.0.1:5050
+2019-02-21,22:59:55.749225 request={'type': 'add_subscriber', 'ip': 'tcp://127.0.0.1:6009', 'topic': 'hello0'}, response=tcp://127.0.0.1:5050
+2019-02-21,22:59:55.877882 Subscriber changes. Table={'hello0': {'pub': {'tcp://127.0.0.1:5050'}, 'sub': {'tcp://127.0.0.1:6000', 'tcp://127.0.0.1:6002', 'tcp://127.0.0.1:6001', 'tcp://127.0.0.1:6004', 'tcp://127.0.0.1:6003'}}}
+2019-02-21,22:59:55.897829 Subscriber changes. Table={'hello0': {'pub': {'tcp://127.0.0.1:5050'}, 'sub': {'tcp://127.0.0.1:6000', 'tcp://127.0.0.1:6002', 'tcp://127.0.0.1:6001', 'tcp://127.0.0.1:6005', 'tcp://127.0.0.1:6008', 'tcp://127.0.0.1:6009', 'tcp://127.0.0.1:6006', 'tcp://127.0.0.1:6004', 'tcp://127.0.0.1:6003', 'tcp://127.0.0.1:6007'}}}
